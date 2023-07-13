@@ -17,12 +17,16 @@ class MongoBeerRepository: PanacheMongoRepository<Beer> {
     //this will get fired when the quarkus microservice starts
     fun onStart(@Observes ev: StartupEvent?) {
 
-        val list = mutableListOf<Beer>()
-        repeat(23){ Faked.genRawEntity()}
-        persist(list)
-        //rather than allowing MongoDB to generate the id for us, we add a single beer
-        // with our own id which we will use for testing. (DO THIS FOR TESTING ONLY)
-        persist(Faked.genTestBeer(Faked.FAKE_ID))
+
+        if (count() == 0L){
+            val list = mutableListOf<Beer>()
+            repeat(23){ list.add(Faked.genRawEntity()) }
+            persist(list)
+            //rather than allowing MongoDB to generate the id for us, we add a single beer
+            // with our own id which we will use for testing. (DO THIS FOR TESTING ONLY)
+            persist(Faked.genTestBeer(Faked.FAKE_ID))
+        }
+
 
     }
 

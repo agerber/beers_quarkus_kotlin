@@ -30,10 +30,10 @@ class BeerService  {
     fun readAll(): List<Beer>{
         return  concreteRepository._readAll()
     }
-    fun update(updatedBeer: Beer): Beer{
+    fun update(updatedBeer: Beer){
         return  concreteRepository._update(updatedBeer)
     }
-    fun deleteById(id:String): Beer{
+    fun deleteById(id:String){
         return  concreteRepository._deleteById(id)
     }
     fun deleteAll(){
