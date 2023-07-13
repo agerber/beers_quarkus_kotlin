@@ -1,6 +1,7 @@
 package edu.uchicago.gerber.quarkus._03repositories
 
 import com.github.javafaker.Faker
+import edu.uchicago.gerber.quark._04models.Faked
 import edu.uchicago.gerber.quarkus._04models.Beer
 import io.quarkus.mongodb.panache.kotlin.PanacheMongoRepository
 import io.quarkus.mongodb.panache.kotlin.PanacheQuery
@@ -13,30 +14,17 @@ import org.bson.types.ObjectId
 @ApplicationScoped
 class MongoBeerRepository: PanacheMongoRepository<Beer> {
 
-    val faker = Faker()
     //this will get fired when the quarkus microservice starts
     fun onStart(@Observes ev: StartupEvent?) {
 
-            val list = mutableListOf<Beer>()
-            repeat(23){
-
-                val fakerBeer = faker.beer()
-                val beer = Beer()
-                //we allow mongo to generate the id's for us
-                //beer.id = ObjectId.get()
-                beer.name = fakerBeer.name()
-                beer.hop = fakerBeer.hop()
-                beer.malt = fakerBeer.malt()
-                beer.style = fakerBeer.style()
-                beer.yeast = fakerBeer.yeast()
-                list.add(beer)
-            }
-          persist(list)
+        val list = mutableListOf<Beer>()
+        repeat(23){ Faked.genRawEntity()}
+        persist(list)
+        //rather than allowing MongoDB to generate the id for us, we add a single beer
+        // with our own id which we will use for testing. (DO THIS FOR TESTING ONLY)
+        persist(Faked.genTestBeer(Faked.FAKE_ID))
 
     }
-
-
-
 
 
 
@@ -44,13 +32,11 @@ class MongoBeerRepository: PanacheMongoRepository<Beer> {
 
      fun _create(beer: Beer){
         this.persist(beer)
-
     }
 
 
      fun _create(beers: List<Beer>){
         this.persist(beers)
-
     }
     //READ
      fun _readById(id:String): Beer {
@@ -85,7 +71,6 @@ class MongoBeerRepository: PanacheMongoRepository<Beer> {
 
      fun _deleteAll() {
         this.deleteAll()
-
     }
 
 
