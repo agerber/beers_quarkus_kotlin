@@ -42,15 +42,14 @@ class MongoBeerRepository: PanacheMongoRepository<Beer> {
 
     //CREATE
 
-     fun _create(beer: Beer): Beer{
+     fun _create(beer: Beer){
         this.persist(beer)
-        return beer
+
     }
 
 
-     fun _create(beers: List<Beer>): List<Beer>{
+     fun _create(beers: List<Beer>){
         this.persist(beers)
-         return  listAll()
 
     }
     //READ
@@ -68,28 +67,25 @@ class MongoBeerRepository: PanacheMongoRepository<Beer> {
 
     //UPDATE
 
-     fun _update(updatedBeer: Beer): Beer {
+     fun _update(updatedBeer: Beer) {
        this.update(updatedBeer)
-       return  updatedBeer
 
     }
 
     //DELETE
 
 
-     fun _deleteById(id:String): Beer{
+     fun _deleteById(id:String){
       val beerId = ObjectId(id)
-      val beer = _readById(id)
       this.deleteById(beerId)
-       //if successful, return deleted beer
-      return beer
+
 
     }
 
 
-     fun _deleteAll(): List<Beer>{
+     fun _deleteAll() {
         this.deleteAll()
-         return emptyList()
+
     }
 
 
