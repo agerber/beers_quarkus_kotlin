@@ -3,6 +3,7 @@ package edu.uchicago.gerber.quarkus._02services
 
 
 import com.fasterxml.jackson.databind.BeanDescription
+import edu.uchicago.gerber.quark._03repositories.BeerRepoInterface
 import edu.uchicago.gerber.quarkus._03repositories.MongoBeerRepository
 import edu.uchicago.gerber.quarkus._04models.Beer
 import io.quarkus.mongodb.panache.kotlin.PanacheQuery
@@ -17,34 +18,45 @@ class BeerService  {
     @Inject
     lateinit var concreteRepository: MongoBeerRepository
 
+    //contains the instantiated object stored an interface reference
+    lateinit var interfaceRepository: BeerRepoInterface
 
+    @PostConstruct
+    fun initialize(){
+        interfaceRepository = concreteRepository
+    }
     fun create(beer: Beer){
-        concreteRepository._create(beer)
+        interfaceRepository._create(beer)
     }
     fun create(beers: List<Beer>){
-        concreteRepository._create(beers)
+        interfaceRepository._create(beers)
     }
     fun readById(id:String): Beer{
-      return  concreteRepository._readById(id)
+      return  interfaceRepository._readById(id)
     }
     fun readAll(): List<Beer>{
-        return  concreteRepository._readAll()
+        return  interfaceRepository._readAll()
     }
     fun update(updatedBeer: Beer){
-        return  concreteRepository._update(updatedBeer)
+        return  interfaceRepository._update(updatedBeer)
     }
     fun deleteById(id:String){
-        return  concreteRepository._deleteById(id)
+        return  interfaceRepository._deleteById(id)
     }
     fun deleteAll(){
-        concreteRepository._deleteAll()
+        interfaceRepository._deleteAll()
     }
     fun count() : Long{
-       return concreteRepository._count()
+       return interfaceRepository._count()
     }
     fun findAll(): PanacheQuery<Beer>?{
-        return concreteRepository._findAll()
+        return interfaceRepository._findAll()
 
+    }
+    @PreDestroy
+    fun purgeDatabase(){
+        //WARNING - DO NOT INCLUDE THIS IN PRODUCTION
+        interfaceRepository._deleteAll()
     }
 
 
