@@ -4,6 +4,7 @@ package edu.uchicago.gerber.quarkus._02services
 
 import com.fasterxml.jackson.databind.BeanDescription
 import edu.uchicago.gerber.quark._03repositories.BeerRepoInterface
+import edu.uchicago.gerber.quark._03repositories.SomeBeerRepository
 import edu.uchicago.gerber.quarkus._03repositories.MongoBeerRepository
 import edu.uchicago.gerber.quarkus._04models.Beer
 import io.quarkus.mongodb.panache.kotlin.PanacheQuery
